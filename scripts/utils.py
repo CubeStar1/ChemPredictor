@@ -45,7 +45,7 @@ def get_smiles_from_name(name):
             output_format = "SMILES",)
         return smiles_string
     except Exception as _:
-        print("No smiles string found")
+        print(_)
         return None
 def display_molecule_in_dataframe_as_html(dataframe):
     df = dataframe
