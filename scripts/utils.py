@@ -8,8 +8,8 @@ import numpy as np
 
 from chembl_webresource_client.new_client import new_client as ch # for similarity search
 from rdkit import Chem
-from rdkit.Chem import AllChem # for molecule handling
-from rdkit.Chem import Draw # for molecule drawing
+from rdkit.Chem import AllChem  #for molecule handling
+from rdkit.Chem import Draw  # for molecule drawing
 # import py3Dmol
 # from stmol import showmol
 from mordred import Calculator, descriptors # for descriptor calculation
