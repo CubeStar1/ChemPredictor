@@ -18,6 +18,7 @@ from streamlit_ketcher import st_ketcher
 # import py3Dmol
 # from about_page import project_overview
 # Utilities
+from scripts import project_overview_page
 from scripts import utils
 from scripts.utils import get_smiles_from_name
 from scripts.utils import display_molecule_in_dataframe_as_html
@@ -227,7 +228,7 @@ def Prediction():
 
 
 
-    if input_selection == 'SMILES input' :
+    elif input_selection == 'SMILES input' :
 
         with st.expander("How to Make Predictions", expanded=True):
             st.info("1. Input SMILES string(s) of the molecule(s) in the box on the left")
@@ -462,7 +463,7 @@ def page_selection():
 
     if selected == "Project Overview":
         st.markdown("""---""")
-        # project_overview()
+        project_overview_page.project_overview()
 
     if selected == "Predictor":
         Prediction()

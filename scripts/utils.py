@@ -39,14 +39,14 @@ EBI_URL = "https://www.ebi.ac.uk/chembl/"
 
 
 def get_smiles_from_name(name):
-    try:
-        smiles_string = py2opsin(
-            chemical_name = name,
-            output_format = "SMILES",)
-        return smiles_string
-    except Exception as _:
-        print(_)
-        return None
+    # try:
+    smiles_string = py2opsin(
+        chemical_name = name,
+        output_format = "SMILES")
+    return smiles_string
+    # except Exception as _:
+    #     print(_)
+    #     return None
 def display_molecule_in_dataframe_as_html(dataframe):
     df = dataframe
     for index, i in enumerate(df['SMILES']):
