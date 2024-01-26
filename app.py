@@ -120,7 +120,7 @@ with st.sidebar:
                         radius='md',
                         variant='filled')
 
-    with st.expander("Input Selection", expanded=False):
+    with st.expander("Input Selection", expanded=True):
         # st.markdown("## Select input type")
         input_selection = sac.chip(items=[
             sac.ChipItem(label='Common Name'),
