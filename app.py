@@ -189,7 +189,7 @@ def Prediction():
             predicted_homo = str(output_df['Predicted HOMO (Ha)'].tolist()[0]) + ' eV'
             predicted_lumo = str(round(output_df['Predicted LUMO (Ha)'].tolist()[0], 4)) + ' eV'
             predicted_bandgap = str(round(
-                output_df['Predicted LUMO (Ha)'].tolist()[0] - output_df['Predicted HOMO (Ha)'].tolist()[0]),4) + ' eV'
+                output_df['Predicted LUMO (Ha)'].tolist()[0] - output_df['Predicted HOMO (Ha)'].tolist()[0],4)) + ' eV'
             predicted_alpha = str(output_df['Predicted alpha (a³)'].tolist()[0]) + ' Å³'
 
             predicted_property_names = ['Cv', 'G', 'Dipole Moment', 'U', 'H', 'Polarizability', 'Band Gap', 'HOMO',
