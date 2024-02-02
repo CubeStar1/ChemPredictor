@@ -13,7 +13,7 @@ import streamlit_antd_components as sac
 # Ketcher - To draw molecules
 from streamlit_ketcher import st_ketcher
 # 3Dmol - To display molecules
-# from utils import display_3D_molecule
+# from scripts.utils import display_3D_molecule
 # from stmol import showmol
 # import py3Dmol
 # from about_page import project_overview
@@ -50,7 +50,7 @@ def load_descriptor_columns():
 # desc_df = pd.read_csv('utilities/descriptors/descriptor_columns_full1.csv')
 desc_df_columns = load_descriptor_columns()
 
-
+# @st.cache_resource
 def load_models():
     # Loading the scaler and the models
     scaler = joblib.load('utilities/scalers/ann_scaler_cv_full (1).joblib')
@@ -71,7 +71,7 @@ properties = ['HOMO', 'LUMO', 'Band Gap', 'Polarizability', 'Dipole moment', 'U'
 # Defining the layout of the web application
 # TITLE
 # st.set_page_config(page_title="Molecular Properties Prediction App", layout='wide', page_icon=":bar_chart:")
-# st.title('Molecular Properties Prediction App')
+st.title('Molecular Property Predictor')
 # st.markdown("""---""")
 
 # SIDEBAR
@@ -189,7 +189,7 @@ def Prediction():
             predicted_homo = str(output_df['Predicted HOMO (Ha)'].tolist()[0]) + ' eV'
             predicted_lumo = str(round(output_df['Predicted LUMO (Ha)'].tolist()[0], 4)) + ' eV'
             predicted_bandgap = str(round(
-                output_df['Predicted LUMO (Ha)'].tolist()[0] - output_df['Predicted HOMO (Ha)'].tolist()[0],4)) + ' eV'
+                output_df['Predicted LUMO (Ha)'].tolist()[0] - output_df['Predicted HOMO (Ha)'].tolist()[0], 4)) + ' eV'
             predicted_alpha = str(output_df['Predicted alpha (a³)'].tolist()[0]) + ' Å³'
 
             predicted_property_names = ['Cv', 'G', 'Dipole Moment', 'U', 'H', 'Polarizability', 'Band Gap', 'HOMO',
@@ -209,7 +209,7 @@ def Prediction():
 
                         with st.container(border=True):
                             st.info('Molecular Weight')
-                            st.markdown(f'<div id="" style="display: flex; justify-content: center; align-items: center; font-size: 20px; height:100px; ">{molecular_weight}</div>', unsafe_allow_html=True)
+                            st.markdown(f'<div id="" style="display: flex; justify-content: center; align-items: center; font-size: 20px; height:70px; ">{molecular_weight}</div>', unsafe_allow_html=True)
 
                     with properties:
                         with st.container(border=True):
@@ -218,7 +218,7 @@ def Prediction():
                                 with col:
                                     for j in range(3):
                                         with st.container(border=True):
-                                            st.markdown(f'<div id="" style=" height:50px; background-color: #ff4b4b; border-radius: 10px; display: flex; justify-content: center; align-items: center; font-weight: bold">{predicted_property_names[3*i+j]}</div>',
+                                            st.markdown(f'<div id="" style=" height:50px; background-color: #ff4b4b; border-radius: 10px; display: flex; justify-content: center; align-items: center; font-weight: bold; color: #ffffff ">{predicted_property_names[3*i+j]}</div>',
                                                         unsafe_allow_html=True)
                                             #st.success(f'{predicted_property_names[3*i+j]}')
                                             st.markdown(
@@ -418,7 +418,7 @@ def Prediction():
             predicted_homo = str(output_df['Predicted HOMO (Ha)'].tolist()[0]) + ' eV'
             predicted_lumo = str(round(output_df['Predicted LUMO (Ha)'].tolist()[0],4)) + ' eV'
             predicted_bandgap = str(output_df['Predicted LUMO (Ha)'].tolist()[0] - output_df['Predicted HOMO (Ha)'].tolist()[0]) + ' eV'
-            predicted_alpha = str(output_df['Predicted alpha (a³)'].tolist()[0]) + ' Å³'
+            predicted_alpha = str(output_df['Predicted alpha (a³)'].tolist()[0]) + ' a0³'
 
 
             predicted_property_names = ['Cv', 'G', 'Dipole Moment', 'U', 'H', 'Polarizability', 'Band Gap', 'HOMO', 'LUMO']
@@ -437,8 +437,11 @@ def Prediction():
 
                     with st.container(border=True):
                         st.info('CHEMBL ID')
-                        chembl_id = similarity_df['ChEMBL ID'].tolist()[0]
-                        st.markdown(chembl_id, unsafe_allow_html=True)
+                        try:
+                            chembl_id = similarity_df['ChEMBL ID'].tolist()[0]
+                            st.markdown(chembl_id, unsafe_allow_html=True)
+                        except:
+                            st.info("Invalid ChEMBL ID")
 
                 with properties:
                     with st.container(border=True):
