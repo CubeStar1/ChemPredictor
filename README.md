@@ -1,5 +1,5 @@
 # ChemPredictor
-![alt text](https://github.com/CubeStar1/ChemPredictorv2/blob/master/utilities/assets/logo/ChemPredictor_flat_logo_wide.jpg?raw=true)
+![alt text](https://github.com/CubeStar1/ChemPredictorv2/blob/master/utilities/assets/logo/ChemPredictor_flat_logo_wide-modified.png?raw=true)
 
 ## Table of Contents
 
