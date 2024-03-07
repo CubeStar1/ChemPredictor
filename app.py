@@ -19,8 +19,9 @@ from streamlit_ketcher import st_ketcher
 # from about_page import project_overview
 # Utilities
 from scripts import project_overview_page
+from scripts.chat_page import chat_page_fn
 from scripts import utils
-from scripts.utils import get_smiles_from_name
+from scripts.utils import get_smiles_from_name, get_iupac_from_smiles
 from scripts.utils import display_molecule_in_dataframe_as_html
 from scripts.predict_property import generate_prediction_dataframe
 # RDKit - To handle molecules
@@ -153,10 +154,33 @@ if input_selection == 'Common Name':
     prediction = st.sidebar.button('Predict property of molecule', use_container_width=True, type='primary')
 
 
+# if "chat_page" not in st.session_state:
+#     st.session_state.chat_page = False
+# if "prediction_page" not in st.session_state:
+#     st.session_state.prediction_page = False
+# if "about_page" not in st.session_state:
+#     st.session_state.about_page = False
+#
+# def change_page():
+#     if st.session_state["sac.segmented"] == "Chat":
+#         st.session_state.chat_page = True
+#         st.session_state.prediction_page = False
+#         st.session_state.about_page = False
+#     elif st.session_state["sac.segmented"] == "Predictor":
+#         st.session_state.chat_page = False
+#         st.session_state.prediction_page = True
+#         st.session_state.about_page = False
+#     elif st.session_state["sac.segmented"] == "Project Overview":
+#         st.session_state.chat_page = False
+#         st.session_state.prediction_page = False
+#         st.session_state.about_page = True
 # PREDICTION PAGE
 
 def Prediction():
-
+    if "prediction_df_html" not in st.session_state:
+        st.session_state.prediction_df_html = []
+    if "prediction_df" not in st.session_state:
+        st.session_state.prediction_df = []
 
     if input_selection == 'Common Name':
         with st.expander("How to Make Predictions", expanded=True):
@@ -174,7 +198,9 @@ def Prediction():
             smiles_list = smiles_string.split(",")
             df_original = pd.DataFrame (smiles_list, columns =['SMILES'])
             output_df = generate_prediction_dataframe(df_original, desc_df_columns, scaler, model_cv, model_G, model_mu, model_homo, model_lumo, model_alpha)
+            st.session_state.prediction_df.append(output_df)
             html_df = display_molecule_in_dataframe_as_html(output_df)
+            st.session_state.prediction_df_html.append(html_df)
 
             # with st.expander("Show predicted properties", expanded=True):
             #     st.markdown(f'<div id="" style="overflow:scroll; height:300px; padding-left: 20px; ">{html_df}</div>',
@@ -240,23 +266,26 @@ def Prediction():
             smiles_list = smiles_input.split(",")
             df_original = pd.DataFrame (smiles_list, columns =['SMILES'])
             output_df = generate_prediction_dataframe(df_original, desc_df_columns, scaler, model_cv, model_G, model_mu, model_homo, model_lumo, model_alpha)
+            st.session_state.prediction_df.append(output_df)
             html_df = display_molecule_in_dataframe_as_html(output_df)
+            st.session_state.prediction_df_html.append(html_df)
 
             # with st.expander("Show predicted properties", expanded=True):
             #     st.markdown(f'<div id="" style="overflow:scroll; height:300px; padding-left: 20px; ">{html_df}</div>',
             #                 unsafe_allow_html=True)
-            molecular_weight = str(round(output_df['Molecular Weight'].tolist()[0], 2)) + ' g/mol'
+        if st.session_state.prediction_df != []:
+            molecular_weight = str(round(st.session_state.prediction_df[-1]['Molecular Weight'].tolist()[0], 2)) + ' g/mol'
 
-            predicted_Cv = str(output_df['Predicted Cv (cal/mol.K)'].tolist()[0]) + ' cal/mol.K'
-            predicted_G = str(output_df['Predicted G (Ha)'].tolist()[0]) + ' kcal/mol'
-            predicted_H = str(round(output_df['Predicted G (Ha)'].tolist()[0] - 0.21, 3)) + ' kcal/mol'
-            predicted_U = str(output_df['Predicted G (Ha)'].tolist()[0] + 1.25) + ' kcal/mol'
-            predicted_mu = str(output_df['Predicted mu (D)'].tolist()[0]) + ' D'
-            predicted_homo = str(output_df['Predicted HOMO (Ha)'].tolist()[0]) + ' eV'
-            predicted_lumo = str(round(output_df['Predicted LUMO (Ha)'].tolist()[0], 4)) + ' eV'
+            predicted_Cv = str(st.session_state.prediction_df[-1]['Predicted Cv (cal/mol.K)'].tolist()[0]) + ' cal/mol.K'
+            predicted_G = str(st.session_state.prediction_df[-1]['Predicted G (Ha)'].tolist()[0]) + ' kcal/mol'
+            predicted_H = str(round(st.session_state.prediction_df[-1]['Predicted G (Ha)'].tolist()[0] - 0.21, 3)) + ' kcal/mol'
+            predicted_U = str(st.session_state.prediction_df[-1]['Predicted G (Ha)'].tolist()[0] + 1.25) + ' kcal/mol'
+            predicted_mu = str(st.session_state.prediction_df[-1]['Predicted mu (D)'].tolist()[0]) + ' D'
+            predicted_homo = str(st.session_state.prediction_df[-1]['Predicted HOMO (Ha)'].tolist()[0]) + ' eV'
+            predicted_lumo = str(round(st.session_state.prediction_df[-1]['Predicted LUMO (Ha)'].tolist()[0], 4)) + ' eV'
             predicted_bandgap = str(
-                output_df['Predicted LUMO (Ha)'].tolist()[0] - output_df['Predicted HOMO (Ha)'].tolist()[0]) + ' eV'
-            predicted_alpha = str(output_df['Predicted alpha (a³)'].tolist()[0]) + ' Å³'
+                st.session_state.prediction_df[-1]['Predicted LUMO (Ha)'].tolist()[0] - st.session_state.prediction_df[-1]['Predicted HOMO (Ha)'].tolist()[0]) + ' eV'
+            predicted_alpha = str(st.session_state.prediction_df[-1]['Predicted alpha (a³)'].tolist()[0]) + ' Å³'
 
             predicted_property_names = ['Cv', 'G', 'Dipole Moment', 'U', 'H', 'Polarizability', 'Band Gap', 'HOMO',
                                         'LUMO']
@@ -275,7 +304,9 @@ def Prediction():
 
                         with st.container(border=True):
                             st.info('Molecular Weight')
-                            st.markdown(f'<div id="" style="display: flex; justify-content: center; align-items: center; font-size: 20px; height:100px; ">{molecular_weight}</div>', unsafe_allow_html=True)
+                            st.markdown(f'<div id="" style="display: flex; justify-content: center; align-items: center; font-size: 20px; height:50px; ">{molecular_weight}</div>', unsafe_allow_html=True)
+                            st.info('IUPAC Name')
+                            st.markdown(get_iupac_from_smiles(smiles_input))
 
                     with properties:
                         with st.container(border=True):
@@ -402,23 +433,26 @@ def Prediction():
             moleculesList = molecule.split(",")
             df_original = pd.DataFrame(moleculesList, columns=['SMILES'])
             output_df = generate_prediction_dataframe(df_original, desc_df_columns, scaler, model_cv, model_G, model_mu, model_homo, model_lumo, model_alpha)
+            st.session_state.prediction_df.append(output_df)
             html_df = display_molecule_in_dataframe_as_html(output_df)
+            st.session_state.prediction_df_html.append(html_df)
             # with results_column:
+        if st.session_state.prediction_df_html != []:
             with st.expander("Show predicted properties", expanded=False):
-                st.markdown(f'<div id="" style="overflow:scroll; height:400px; padding-left: 20px;">{html_df}</div>',
+                st.markdown(f'<div id="" style="overflow:scroll; height:400px; padding-left: 20px;">{st.session_state.prediction_df_html[-1]}</div>',
                                 unsafe_allow_html=True)
+        if st.session_state.prediction_df != []:
+            molecular_weight = st.session_state.prediction_df[-1]['Molecular Weight'].tolist()[0]
 
-            molecular_weight = output_df['Molecular Weight'].tolist()[0]
-
-            predicted_Cv = str(output_df['Predicted Cv (cal/mol.K)'].tolist()[0]) + ' cal/mol.K'
-            predicted_G = str(output_df['Predicted G (Ha)'].tolist()[0]) + ' kcal/mol'
-            predicted_H = str(round(output_df['Predicted G (Ha)'].tolist()[0] - 0.21, 3)) + ' kcal/mol'
-            predicted_U = str(output_df['Predicted G (Ha)'].tolist()[0] + 1.25) + ' kcal/mol'
-            predicted_mu = str(output_df['Predicted mu (D)'].tolist()[0]) + ' D'
-            predicted_homo = str(output_df['Predicted HOMO (Ha)'].tolist()[0]) + ' eV'
-            predicted_lumo = str(round(output_df['Predicted LUMO (Ha)'].tolist()[0],4)) + ' eV'
-            predicted_bandgap = str(output_df['Predicted LUMO (Ha)'].tolist()[0] - output_df['Predicted HOMO (Ha)'].tolist()[0]) + ' eV'
-            predicted_alpha = str(output_df['Predicted alpha (a³)'].tolist()[0]) + ' a0³'
+            predicted_Cv = str(st.session_state.prediction_df[-1]['Predicted Cv (cal/mol.K)'].tolist()[0]) + ' cal/mol.K'
+            predicted_G = str(st.session_state.prediction_df[-1]['Predicted G (Ha)'].tolist()[0]) + ' kcal/mol'
+            predicted_H = str(round(st.session_state.prediction_df[-1]['Predicted G (Ha)'].tolist()[0] - 0.21, 3)) + ' kcal/mol'
+            predicted_U = str(st.session_state.prediction_df[-1]['Predicted G (Ha)'].tolist()[0] + 1.25) + ' kcal/mol'
+            predicted_mu = str(st.session_state.prediction_df[-1]['Predicted mu (D)'].tolist()[0]) + ' D'
+            predicted_homo = str(st.session_state.prediction_df[-1]['Predicted HOMO (Ha)'].tolist()[0]) + ' eV'
+            predicted_lumo = str(round(st.session_state.prediction_df[-1]['Predicted LUMO (Ha)'].tolist()[0],4)) + ' eV'
+            predicted_bandgap = str(st.session_state.prediction_df[-1]['Predicted LUMO (Ha)'].tolist()[0] - st.session_state.prediction_df[-1]['Predicted HOMO (Ha)'].tolist()[0]) + ' eV'
+            predicted_alpha = str(st.session_state.prediction_df[-1]['Predicted alpha (a³)'].tolist()[0]) + ' a0³'
 
 
             predicted_property_names = ['Cv', 'G', 'Dipole Moment', 'U', 'H', 'Polarizability', 'Band Gap', 'HOMO', 'LUMO']
@@ -442,6 +476,8 @@ def Prediction():
                             st.markdown(chembl_id, unsafe_allow_html=True)
                         except:
                             st.info("Invalid ChEMBL ID")
+                        st.info('IUPAC Name')
+                        st.markdown(get_iupac_from_smiles(moleculesList[0]))
 
                 with properties:
                     with st.container(border=True):
@@ -458,18 +494,26 @@ def Prediction():
                                             unsafe_allow_html=True)
 
                                         #st.metric(label="Predicted", value=predicted_property_values[3*i+j], delta="", label_visibility='collapsed')
+import google.generativeai as genai
 
+model = genai.GenerativeModel('gemini-pro')
 def page_selection():
     selected = sac.segmented(items=[
         sac.SegmentedItem(label='Predictor', icon='🔮' ),
-        sac.SegmentedItem(label='Project Overview', icon='🏠')],  format_func='title', align='center', use_container_width=True)
+        sac.SegmentedItem(label='Project Overview', icon='🏠'),
+        sac.SegmentedItem(label='Chat')],  format_func='title', align='center', use_container_width=True)
 
     if selected == "Project Overview":
-        st.markdown("""---""")
+        # st.markdown("""---""")
         project_overview_page.project_overview()
-
+        # st.session_state.about_page = True
     if selected == "Predictor":
         Prediction()
+        #st.session_state.prediction_page = True
+
+    if selected == "Chat":
+        chat_page_fn(model)
+        #st.session_state.chat_page = True
 
 
 page_selection()

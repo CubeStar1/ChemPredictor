@@ -1,6 +1,7 @@
 
 import glob # for image handling
 from typing import Optional, Tuple
+import requests
 
 import streamlit as st
 import pandas as pd
@@ -37,6 +38,16 @@ EBI_URL = "https://www.ebi.ac.uk/chembl/"
 #     showmol(view)
 #
 
+def get_iupac_from_smiles(smiles):
+    if smiles == "":
+        return "No SMILES string provided."
+    url = f"https://electronvisual.org/api/smiles_to_iupac/{smiles}"
+    response = requests.get(url)
+    if response.status_code == 200:
+        return response.json()
+    else:
+        error = "Unable to get IUPAC name from SMILES string. Please try again."
+        return error
 
 def get_smiles_from_name(name):
     # try:
