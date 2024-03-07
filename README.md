@@ -50,7 +50,7 @@ ChemPredictor aims to analyze Molecular Properties of known compounds and constr
     - **Heat capacity (Cv):** Amount of heat required to increase the temperature of the molecule by one degree.
 
 ### Key Features 
-
+- **Gemini LLM Integration:** Ask Gemini Pro, Google's AI language model, to provide additional information about the predicted properties or the compound itself. (API Key required)
 - **Multiple Input Options:** ChemPredictor supports various input methods for user convenience.
 
   - **SMILES Input:** Predict properties by entering the SMILES string of the compound directly.
@@ -61,6 +61,7 @@ ChemPredictor aims to analyze Molecular Properties of known compounds and constr
 - **Similar Molecules:** Explore similar molecules based on the predicted properties, providing valuable insights into chemical similarity.
 
 - **3D Molecular Visualization:** Visualize molecular structures in three dimensions, enhancing the understanding of the compound's spatial arrangement."
+
 
 
 
@@ -142,6 +143,7 @@ To run the ChemPredictor WebUI, follow these steps:
 #### Model Deployment and Prediction
 - **Libraries Used:** Streamlit
 - **Overview:** A user-friendly web interface is created using the Streamlit framework for model deployment. User input is accepted via the WebUI, preprocessed, and predictions are made using the deployed ANN model. 
+- **Gemini LLM Integration:** Google's AI language model, Gemini Pro, is integrated to provide additional information about the predicted properties or the compound itself. (API Key required)
 
 ## File Structure
 ```
