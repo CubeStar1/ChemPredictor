@@ -24,8 +24,8 @@
 - **Predict Molecular Properties:** Utilize an ANN model to predict 9 thermodynamic properties of organic molecules based on their molecular structure.
 - **User-Friendly Interface:** Develop a Streamlit WebUI that allows users to input the common name, SMILES string, or draw the molecule for property prediction.
 - **Gemini LLM Integration:** Integrate Google's AI language model, Gemini Pro, to provide additional information about the predicted properties or the compound itself. (API Key required)
-![alt text](https:github.com/CubeStar1/ChemPredictorv2/blob/master/utilities/assets/overview_images/implementation_flowchart.jpg?raw=true)
-![alt text](https:github.com/CubeStar1/ChemPredictorv2/blob/master/utilities/assets/overview_images/model_architecture.png?raw=true)
+![alt text](https://github.com/CubeStar1/ChemPredictorv2/blob/master/utilities/assets/overview_images/implementation_flowchart.jpg?raw=true)
+![alt text](https:///github.com/CubeStar1/ChemPredictorv2/blob/master/utilities/assets/overview_images/model_architecture.png?raw=true)
    **Table 1** - Predicted properties of the QM9 dataset
    
    | No. | Property | Unit      | Description                             |
@@ -123,7 +123,7 @@ To run the ChemPredictor WebUI, follow these steps:
    - Once the input is provided (SMILES string, CSV file, or drawn molecule), click on the "Predict" button.
 5. **View Predicted Values:**
    - The predicted values will be displayed on the right side of the screen.
-![alt text](https:github.com/CubeStar1/ChemPredictorv2/blob/master/utilities/assets/overview_images/web_interface.png?raw=true)
+![alt text](https://github.com/CubeStar1/ChemPredictorv2/blob/master/utilities/assets/overview_images/web_interface.png?raw=true)
 
 ### Dependencies
 
@@ -176,4 +176,4 @@ For a quick demo, you can also access the hosted version of ChemPredictor at htt
 
 ## How it Works
 
-![alt text](https:github.com/CubeStar1/ChemPredictorv2/blob/master/utilities/assets/overview_images/web_interface_working.png?raw=true)
+![alt text](https://github.com/CubeStar1/ChemPredictorv2/blob/master/utilities/assets/overview_images/web_interface_working.png?raw=true)
