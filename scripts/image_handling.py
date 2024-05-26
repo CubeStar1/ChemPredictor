@@ -11,7 +11,7 @@ def get_thumbnail(path: str) -> Image:
 def image_to_base64(img_path: str) -> str:
     img = get_thumbnail(img_path)
     with BytesIO() as buffer:
-        img.save(buffer, 'png') # or 'jpeg'
+        img.save(buffer, 'png')
         return base64.b64encode(buffer.getvalue()).decode()
 
 def image_formatter(img_path: str) -> str:
@@ -19,5 +19,4 @@ def image_formatter(img_path: str) -> str:
 
 
 def convert_df(input_df):
-    # IMPORTANT: Cache the conversion to prevent computation on every rerun
     return input_df.to_html(escape=False, formatters=dict(Structure=image_formatter), justify='center')

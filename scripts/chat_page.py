@@ -1,11 +1,19 @@
-import streamlit as st
-import google.generativeai as genai
-import PIL.Image
-import glob
-from gtts import gTTS
-import tempfile
+# Standard Libraries
 import os
+import glob
+import tempfile
 
+# Image Processing Libraries
+import PIL.Image
+
+# Text-to-Speech Libraries
+from gtts import gTTS
+
+# Streamlit Libraries
+import streamlit as st
+
+# Google Generative AI Libraries
+import google.generativeai as genai
 
 
 BASE_PROMPT_VISION = "What is this compound and what are some of its properties? Answer it as short as possible and include all equations."
@@ -25,7 +33,6 @@ def chat_page_fn(model):
         st.session_state.GOOGLE_API_KEY = ""
     if "message_count" not in st.session_state:
         st.session_state.message_count = 0
-    # st.title("Chat with Gemini")
     if "prediction_df_html" not in st.session_state:
         st.session_state.prediction_df_html = []
     with st.expander("Recent Prediction", expanded=True):
@@ -65,7 +72,6 @@ def chat_page_fn(model):
         img_path = glob.glob('./images/*.png')[0]
         print(img_path)
         img = PIL.Image.open(img_path)
-        #img = PIL.Image.open('C:\\Users\\avina\\PycharmProjects\\ChemPredictorv2\\images\\0C1=CC=CC=C1.png')
         model_vision = genai.GenerativeModel('gemini-pro-vision')
         message_vision = [BASE_PROMPT_VISION, img]
         response_vision = model_vision.generate_content(message_vision, safety_settings={'HATE_SPEECH':'block_none'})
@@ -94,7 +100,6 @@ def chat_page_fn(model):
                 st.markdown(prompt)
 
             with st.chat_message("assistant"):
-                #img = PIL.Image.open('C:\\Users\\avina\\PycharmProjects\\ChemPredictorv2\\images\\0C1=CC=CC=C1.png')
                 messages = [{"role": m["role"], "parts": [m["parts"]]} for m in st.session_state.messages]
                 # with st.spinner("Thinking..."):
                 #model.generate_content()

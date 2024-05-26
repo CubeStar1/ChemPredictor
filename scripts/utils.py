@@ -1,24 +1,30 @@
-
-import glob # for image handling
+# Standard Libraries
+import glob
 from typing import Optional, Tuple
 import requests
 
-import streamlit as st
+# Data Manipulation Libraries
 import pandas as pd
 import numpy as np
 
-from chembl_webresource_client.new_client import new_client as ch # for similarity search
+# Streamlit Libraries
+import streamlit as st
+
+# Chemistry Libraries
+from chembl_webresource_client.new_client import new_client as ch
 from rdkit import Chem
-from rdkit.Chem import AllChem  #for molecule handling
-from rdkit.Chem import Draw  # for molecule drawing
+from rdkit.Chem import AllChem
+from rdkit.Chem import Draw
+from mordred import Calculator, descriptors
+
+# Project Specific Libraries
+from scripts.image_handling import convert_df
+from py2opsin import py2opsin
 # import py3Dmol
 # from stmol import showmol
-from mordred import Calculator, descriptors # for descriptor calculation
-from scripts.image_handling import convert_df
-
-from py2opsin import py2opsin
-
 # from st_speckmol import speck_plot
+
+
 EBI_URL = "https://www.ebi.ac.uk/chembl/"
 
 # def display_3D_molecule(smiles, width, height):
@@ -36,7 +42,6 @@ EBI_URL = "https://www.ebi.ac.uk/chembl/"
 #     view.zoomTo()
 #     view.spin(spin_on=True)
 #     showmol(view)
-#
 
 def get_iupac_from_smiles(smiles):
     if smiles == "":
@@ -50,14 +55,11 @@ def get_iupac_from_smiles(smiles):
         return error
 
 def get_smiles_from_name(name):
-    # try:
     smiles_string = py2opsin(
         chemical_name = name,
         output_format = "SMILES")
     return smiles_string
-    # except Exception as _:
-    #     print(_)
-    #     return None
+
 def display_molecule_in_dataframe_as_html(dataframe):
     df = dataframe
     for index, i in enumerate(df['SMILES']):
@@ -69,14 +71,12 @@ def display_molecule_in_dataframe_as_html(dataframe):
     return html_df
 
 
-def display_molecule(molecule): # Function to display molecules
+def display_molecule(molecule):
     img = Draw.MolToImage(molecule, size=(1000, 1000), fitImage=True)
     st.image(img)
 
 def display_molecule_dataframe(dataframe):
     df = dataframe
-    #img = Draw.MolsToGridImage([Chem.MolFromSmiles(str(i)) for i in df['SMILES']], molsPerRow=2, subImgSize=(300, 300), legends=[str(j +'\n' + '\n' + str(round(i, 2)) + " J/mol.K") for i, j in zip(df['Predicted Cv (J/mol.K)'], df['SMILES'])])
-
     img = Draw.MolsToGridImage([Chem.MolFromSmiles(str(i)) for i in df['SMILES']], molsPerRow=2, subImgSize=(300, 300), legends=[str(j) for i, j in zip(df['Predicted Cv (cal/mol.K)'], df['SMILES'])])
     st.image(img, use_column_width=True)
     images = []
@@ -192,7 +192,7 @@ def render_similarity_table(similar_molecules):
     records = [render_row(row) for row in similar_molecules if row["molecule_structures"]]
     df = pd.DataFrame.from_records(records)
     styled = style_table(df)
-    return styled.to_html(render_links=True), df  # return the dataframe as well
+    return styled.to_html(render_links=True), df
 
 
 def render_target_predictions_table(predictions) -> Optional[str]:

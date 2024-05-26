@@ -12,19 +12,20 @@
 5. [Dependencies](#dependencies)
 7. [File Structure](#file-structure)
 8. [Hosted Version](#hosted-version)
-
+9. [How it Works](#how-it-works)
 ## Overview 
 
-ChemPredictor aims to analyze Molecular Properties of known compounds and construct an advanced Artificial Neural Network (ANN) model capable of accurately predicting these properties for unknown compounds. This project seamlessly integrates the principles of chemistry, mathematics, and Python programming to develop and deploy an ANN model for Molecular Property Prediction (MPP).
-
+- ChemPredictor is a Streamlit Web Interface that uses an artificial neural network (ANN) trained using TensorFlow for quantitative structure-property relationship (QSPR) analysis of molecules to predict 9 thermodynamic properties. 
+- Users can either enter the common name of the compound or draw the molecule using an interactive sketch tool and obtain predicted properties in real time.
+- The project aims to provide a user-friendly interface for chemists, researchers, and students to analyze and predict the properties of organic molecules. 
+- The integration of Google's AI language model, Gemini Pro, allows users to obtain additional information about the predicted properties or the compound itself. (API Key required)
 ### Objectives 
 
-1. **Molecular Property Analysis:** Explore the Molecular Properties of known compounds.
-2. **ANN Model Construction:** Build a robust Artificial Neural Network model for accurate prediction of molecular properties.
-3. **Interdisciplinary Approach:** Integrate concepts from chemistry, mathematics, and programming to enhance the model's effectiveness.
-4. **User-Friendly Interface:** Develop an interactive [WebUI using Streamlit](https://chempredictor.streamlit.app/) for seamless and user-friendly predictions.
-5. **Targeted Properties:** Focus on predicting a set of 9 molecular properties crucial for comprehensive chemical analysis:
-
+- **Predict Molecular Properties:** Utilize an ANN model to predict 9 thermodynamic properties of organic molecules based on their molecular structure.
+- **User-Friendly Interface:** Develop a Streamlit WebUI that allows users to input the common name, SMILES string, or draw the molecule for property prediction.
+- **Gemini LLM Integration:** Integrate Google's AI language model, Gemini Pro, to provide additional information about the predicted properties or the compound itself. (API Key required)
+![alt text](https:github.com/CubeStar1/ChemPredictorv2/blob/master/utilities/assets/overview_images/implementation_flowchart.jpg?raw=true)
+![alt text](https:github.com/CubeStar1/ChemPredictorv2/blob/master/utilities/assets/overview_images/model_architecture.png?raw=true)
    **Table 1** - Predicted properties of the QM9 dataset
    
    | No. | Property | Unit      | Description                             |
@@ -50,17 +51,17 @@ ChemPredictor aims to analyze Molecular Properties of known compounds and constr
     - **Heat capacity (Cv):** Amount of heat required to increase the temperature of the molecule by one degree.
 
 ### Key Features 
-- **Gemini LLM Integration:** Ask Gemini Pro, Google's AI language model, to provide additional information about the predicted properties or the compound itself. (API Key required)
+- **Gemini LLM Integration:** 
 - **Multiple Input Options:** ChemPredictor supports various input methods for user convenience.
 
   - **SMILES Input:** Predict properties by entering the SMILES string of the compound directly.
   - **Common Name Input:** Input the common name of the compound (e.g., \"Aspirin\") to predict its properties.
   - **CSV File Upload:** Upload a CSV file containing SMILES strings to predict properties for multiple molecules.
-  - **Molecule Drawing:** Utilize an interactive drawing board to draw the molecule for property prediction.
+  - **Molecule Drawing:** Use an interactive drawing board to draw the molecule for property prediction.
 
-- **Similar Molecules:** Explore similar molecules based on the predicted properties, providing valuable insights into chemical similarity.
+- **Similar Molecules:** Shows similar molecules based on the predicted properties, providing insights into chemical similarity.
 
-- **3D Molecular Visualization:** Visualize molecular structures in three dimensions, enhancing the understanding of the compound's spatial arrangement."
+- **3D Molecular Visualization:** Shows molecular structures in three dimensions, providing an insight into the compound's spatial arrangement."
 
 
 
@@ -122,27 +123,26 @@ To run the ChemPredictor WebUI, follow these steps:
    - Once the input is provided (SMILES string, CSV file, or drawn molecule), click on the "Predict" button.
 5. **View Predicted Values:**
    - The predicted values will be displayed on the right side of the screen.
+![alt text](https:github.com/CubeStar1/ChemPredictorv2/blob/master/utilities/assets/overview_images/web_interface.png?raw=true)
 
 ### Dependencies
 
 #### Dataset
-- **QM9 Dataset:** ChemPredictor utilizes the QM9 dataset, a benchmark in quantum chemistry, for training and testing the model. The dataset includes thermochemical properties, electronic properties, and geometries of small organic molecules.
+- **QM9 Dataset:** The QM9 dataset is used for training the ANN model. It contains 133,885 stable small organic molecules with up to nine heavy atoms (C, N, O, F). The dataset includes 9 thermodynamic properties for each molecule.
 
 #### Data Analysis and Exploration
 - **Libraries Used:** NumPy, Pandas, Matplotlib
-- **Overview:** Statistical summaries are generated using NumPy and Pandas to gain insights into data distribution, missing values, and outliers. Matplotlib is employed for data visualization to uncover patterns and relationships.
+- **Overview:** Data analysis and exploration are performed using NumPy, Pandas, and Matplotlib to understand the dataset's structure and properties.
 
 #### Data Preparation
 - **Libraries Used:** RDKit, Mordred Molecular Descriptors
-- **Overview:** Feature engineering is carried out using RDKit to create 2D representations of molecules from SMILES input. RDKit and Mordred Molecular Descriptors are used for preprocessing, generating descriptors for each input molecule. The dataset is then split into training, validation, and test sets.
-
+- **Overview:** RDKit is used to convert the SMILES strings into molecular structures, and Mordred is used to calculate 1826 molecular descriptors for each molecule.
 #### Machine Learning
 - **Libraries Used:** TensorFlow with Keras, Scikit-learn
-- **Overview:**  An Artificial Neural Network (ANN) is developed using TensorFlow with Keras. The model is trained on the training data, and its performance is evaluated using Scikit-learn metrics.
-
+- **Overview:**  An ANN model is trained using TensorFlow with Keras to predict the 9 thermodynamic properties of organic molecules. The model is trained on the QM9 dataset and evaluated using Scikit-learn.
 #### Model Deployment and Prediction
 - **Libraries Used:** Streamlit
-- **Overview:** A user-friendly web interface is created using the Streamlit framework for model deployment. User input is accepted via the WebUI, preprocessed, and predictions are made using the deployed ANN model. 
+- **Overview:** Streamlit is used to make a user-friendly Web Interface. User input is accepted via the WebUI, preprocessed, and predictions are made using the deployed ANN model. 
 - **Gemini LLM Integration:** Google's AI language model, Gemini Pro, is integrated to provide additional information about the predicted properties or the compound itself. (API Key required)
 
 ## File Structure
@@ -173,3 +173,7 @@ project-root/
 
 ## Hosted Version
 For a quick demo, you can also access the hosted version of ChemPredictor at https://chempredictor.streamlit.app/
+
+## How it Works
+
+![alt text](https:github.com/CubeStar1/ChemPredictorv2/blob/master/utilities/assets/overview_images/web_interface_working.png?raw=true)

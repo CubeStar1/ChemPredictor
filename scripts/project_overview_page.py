@@ -6,7 +6,7 @@ def project_overview():
     # with content:
     st.markdown(""" 
     ##  Molecular Property Prediction using Artificial Neural Networks
-    This project focuses on leveraging ANN's for the prediction of molecular properties and the application of ANN's 
+    This project focuses on using ANN's for the prediction of molecular properties and the application of ANN's 
     in the field of computational chemistry
     and holds the potential to revolutionise the understanding and prediction of key molecular characteristics 
     """)
@@ -16,10 +16,9 @@ def project_overview():
     
     - The objective of this project is to analyze the molecular properties of known compounds and build an Artificial 
     Neural Network (ANN) model that can accurately predict these properties for unknown compounds. 
-    - The project integrates concepts from chemistry, mathematics, and Python programming to develop and deploy an ANN model for 
-    Molecular Property Prediction (MPP). 
-    - An interactive WebUI will be created using Streamlit to facilitate user-friendly predictions. 
-    - The final goal is to predict a set of 9 targeted molecular properties.
+    - **Predict Molecular Properties:** Utilize an ANN model to predict 9 thermodynamic properties of organic molecules based on their molecular structure.
+    - **User-Friendly Interface:** Develop a Streamlit WebUI that allows users to input the common name, SMILES string, or draw the molecule for property prediction.
+    - **Gemini LLM Integration:** Integrate Google's AI language model, Gemini Pro, to provide additional information about the predicted properties or the compound itself. (API Key required)
         
     ## Implementation
     
